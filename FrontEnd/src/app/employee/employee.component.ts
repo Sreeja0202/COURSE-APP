@@ -2,8 +2,8 @@ import { compileNgModule } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Employee } from '../employee.model';
-import { EmployeeserviceService } from '../employeeservice.service';
+import { Course } from '../employee.model';
+import { CourseserviceService } from '../employeeservice.service';
 
 @Component({
   selector: 'app-employee',
@@ -11,63 +11,63 @@ import { EmployeeserviceService } from '../employeeservice.service';
   styleUrls: ['./employee.component.css'],
 })
 export class EmployeeComponent implements OnInit {
-  empForm: FormGroup;
+  courseForm: FormGroup;
   showModal: boolean = false;
   editMode: boolean = false;
 
-  employees: Employee[];
+  courses: Course[];
 
   constructor(
     private fb: FormBuilder,
-    private empService: EmployeeserviceService
+    private couService: CourseserviceService
   ) {}
 
   ngOnInit(): void {
-    this.getEmployees();
-    this.empForm = this.fb.group({
+    this.getCourses();
+    this.courseForm = this.fb.group({
       _id: '',
-      ename: [
+      cname: [
         '',
         [Validators.required, Validators.pattern('^[A-Za-z]+[. ]?[A-Za-z .]*')],
       ],
-      eposition: ['', [Validators.required]],
-      elocation: ['', [Validators.required]],
-      esalary: ['', [Validators.required, Validators.pattern('^[1-9][0-9]+')]],
+      cduration: ['', [Validators.required]],
+      cvenue: ['', [Validators.required]],
     });
   }
 
-  getEmployees() {
-    this.empService.getEmployeeList().subscribe((res: Employee[]) => {
+  getCourses() {
+    this.couService.getCourseList().subscribe((res: Course[]) => {
       console.log(res);
-      this.employees = res;
+      this.courses = res;
     });
   }
 
-  onEditEmployee(emp: Employee) {
+  onEditCourse(cou: Course) {
     this.editMode = true;
     this.showModal = true;
-    this.empForm.patchValue(emp);
+    this.courseForm.patchValue(cou);
   }
 
-  onEmpSubmit() {
-    if (this.empForm.valid) {
+  onCourseSubmit() {
+    if (this.courseForm.valid) {
       if (this.editMode) {
-        this.empService.updateEmployee(this.empForm.value).subscribe(
+        this.couService.updateCourse(this.courseForm.value).subscribe(
           (res) => {
-            this.getEmployees();
+            this.getCourses();
             this.onCloseModal();
-            alert('Employee Details successfully updated!!!');
+            alert('Course Details successfully updated!!!');
           },
           (err) => {
             console.log(err);
           }
         );
       } else {
-        this.empService.addEmployee(this.empForm.value).subscribe(
+        this.couService.addCourse(this.courseForm.value).subscribe(
           (res) => {
-            this.getEmployees();
+            console.log(this.courseForm.value);
+            this.getCourses();
             this.onCloseModal();
-            alert('Employee Details successfully added!!!');
+            alert('Course Details successfully added!!!');
           },
           (err) => {
             console.log(err);
@@ -77,20 +77,21 @@ export class EmployeeComponent implements OnInit {
     }
   }
 
-  onAddEmployee() {
+  onAddCourse() {
     this.showModal = true;
   }
 
   onCloseModal() {
+    this.courseForm.reset();
     this.showModal = false;
   }
 
-  onDeleteEmployee(id: any) {
+  onDeleteCourse(id: any) {
     if (confirm('Are you sure you want to delete this employee?')) {
-      this.empService.deleteEmployee(id).subscribe(
+      this.couService.deleteCourse(id).subscribe(
         (res) => {
           console.log(res);
-          this.getEmployees();
+          this.getCourses();
         },
         (err) => {
           console.log(err);

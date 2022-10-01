@@ -1,7 +1,6 @@
-export interface Employee{
-    _id:string;
-    ename: string;
-    eposition: string;
-    elocation: string;
-    esalary: number;
+export interface Course {
+  _id: string;
+  cname: string;
+  cduration: string;
+  cvenue: string;
 }

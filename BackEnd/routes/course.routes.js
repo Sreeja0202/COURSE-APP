@@ -2,13 +2,13 @@ const express = require("express");
 const router = express.Router();
 const objectId = require("mongoose").Types.ObjectId;
 
-const Employee = require("../model/employee.model.js");
+const Course = require("../model/course.model.js");
 
 // GET by id/salary/name
 
 router.get("/:id", (req, res) => {
   if (objectId.isValid(req.params.id)) {
-    Employee.findById(req.params.id, (err, doc) => {
+    Course.findById(req.params.id, (err, doc) => {
       if (err) {
         console.log("Error in getting data by id", +err);
       } else {
@@ -18,13 +18,13 @@ router.get("/:id", (req, res) => {
   } else {
     return res
       .status(400)
-      .send(`No record found with Employee with id ${req.params.id}`);
+      .send(`No record found with Course with id ${req.params.id}`);
   }
 });
 
 // GET
 router.get("/", (req, res) => {
-  Employee.find((err, doc) => {
+  Course.find((err, doc) => {
     if (err) {
       console.log("Error in getting data", +err);
     } else {
@@ -35,13 +35,12 @@ router.get("/", (req, res) => {
 
 // POST
 router.post("/", (req, res) => {
-  let emp = new Employee({
-    ename: req.body.ename,
-    eposition: req.body.eposition,
-    elocation: req.body.elocation,
-    esalary: req.body.esalary,
+  let cou = new Course({
+    cname: req.body.cname,
+    cduration: req.body.cduration,
+    cvenue: req.body.cvenue,
   });
-  emp.save((err, doc) => {
+  cou.save((err, doc) => {
     if (err) {
       console.log("Error in Posting Data", +err);
     } else {
@@ -54,15 +53,14 @@ router.post("/", (req, res) => {
 
 router.put("/:id", (req, res) => {
   if (objectId.isValid(req.params.id)) {
-    let emp = {
-      ename: req.body.ename,
-      eposition: req.body.eposition,
-      elocation: req.body.elocation,
-      esalary: req.body.esalary,
+    let cou = {
+      cname: req.body.cname,
+      cduration: req.body.cduration,
+      cvenue: req.body.cvenue,
     };
-    Employee.findByIdAndUpdate(
+    Course.findByIdAndUpdate(
       req.params.id,
-      { $set: emp },
+      { $set: cou },
       { new: true },
       (err, doc) => {
         if (err) {
@@ -75,7 +73,7 @@ router.put("/:id", (req, res) => {
   } else {
     return res
       .status(400)
-      .send(`No record found with Employee with id ${req.params.id}`);
+      .send(`No record found with Course with id ${req.params.id}`);
   }
 });
 
@@ -83,7 +81,7 @@ router.put("/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
   if (objectId.isValid(req.params.id)) {
-    Employee.findByIdAndRemove(req.params.id, (err, doc) => {
+    Course.findByIdAndRemove(req.params.id, (err, doc) => {
       if (err) {
         console.log("Error in Deleting data by id", +err);
       } else {
@@ -93,7 +91,7 @@ router.delete("/:id", (req, res) => {
   } else {
     return res
       .status(400)
-      .send(`No record found with Employee with id ${req.params.id}`);
+      .send(`No record found with Course with id ${req.params.id}`);
   }
 });
 

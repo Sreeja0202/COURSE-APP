@@ -1,30 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Employee } from './employee.model';
+import { Course } from './employee.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class EmployeeserviceService {
-url = 'http://localhost:3000/employees';
-  constructor(private http: HttpClient) { }
-  
-  addEmployee(emp: Employee)
-  {
-    return this.http.post(this.url, emp);
+export class CourseserviceService {
+  url = 'http://localhost:3000/courses';
+  constructor(private http: HttpClient) {}
 
+  addCourse(cou: Course) {
+    return this.http.post(this.url, cou);
   }
 
-  getEmployeeList(){
-    return this.http.get<Employee[]>(this.url);
+  getCourseList() {
+    return this.http.get<Course[]>(this.url);
   }
 
-  deleteEmployee(id: any){
+  deleteCourse(id: any) {
     return this.http.delete(`${this.url}/${id}`);
   }
-  
-  
-  updateEmployee(emp: Employee){
-    return this.http.put(`${this.url}/${emp._id}`, emp);
+
+  updateCourse(cou: Course) {
+    return this.http.put(`${this.url}/${cou._id}`, cou);
   }
 }
